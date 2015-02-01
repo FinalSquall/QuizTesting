@@ -9,4 +9,7 @@ import java.rmi.RemoteException;
 public interface PlayerService extends Remote {
     String[] showQuizChoices() throws RemoteException;
     String getQuestion() throws RemoteException;
+    void fetchPlayer(Player player) throws RemoteException;
+    boolean isExistingId(String userName) throws RemoteException;
+    String testPlayerEntry() throws RemoteException;
 }

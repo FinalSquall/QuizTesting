@@ -10,6 +10,7 @@ import java.util.Scanner;
  */
 public class QuizObject implements Serializable {
     private static final long serialVersionUID = 8854465771377707283L;
+    private int id;
     private String name;
     private List<FullQuestion> questions;
 
@@ -45,7 +46,7 @@ public class QuizObject implements Serializable {
             {
                 System.out.println("Enter the number of the answer you entered which was correct");
                 String temp = sc.nextLine();
-                if (isValidNumber(temp))
+                if (InputValidator.validParse(temp))
                 {
                     correctAns = Integer.parseInt(temp);
                 }
@@ -69,19 +70,6 @@ public class QuizObject implements Serializable {
     public boolean isValidAnswer(int num)
     {
         return num > 0 && num < 5;
-    }
-
-    public boolean isValidNumber(String num)
-    {
-        int validNum = 0;
-        for (int i = 0; i < num.length(); i++)
-        {
-            if (Character.isDigit(num.charAt(i)))
-            {
-                validNum++;
-            }
-        }
-        return validNum == num.length();
     }
 
     public String getName()

@@ -12,10 +12,14 @@ import java.util.List;
 public class QuizServer extends UnicastRemoteObject implements QuizService, PlayerService {
 
     private List<QuizObject> quizList;
+    private List<Player> players;
+    private Score highScore;
 
     public QuizServer() throws RemoteException
     {
         quizList = new ArrayList<QuizObject>();
+        players = new ArrayList<Player>();
+        this.highScore = null;
         if (fileExists())
         {
                 readQuizList();
@@ -42,7 +46,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizService, Play
         });
     }
 
-    public String[] showQuizChoices()
+    public String[] showQuizChoices() throws RemoteException
     {
         System.out.println("Sent quiz names to Player: ");
         String[] quizNames = new String[quizList.size()];
@@ -53,10 +57,28 @@ public class QuizServer extends UnicastRemoteObject implements QuizService, Play
         return quizNames;
     }
 
-    public String getQuestion()
+    public String getQuestion() throws RemoteException
     {
         System.out.println("Sent Question to Player");
         return quizList.get(0).getQuestions().get(0).getQuestion().getQuestion();
+    }
+
+    public boolean isExistingId(String userName)
+    {
+        boolean exists = false;
+        for (int i = 0; i < players.size(); i++)
+        {
+            if (players.get(i).getUserName().equals(userName))
+            {
+                exists = true;
+            }
+        }
+        return exists;
+    }
+
+    public String testPlayerEntry()
+    {
+        return "Name: " + players.get(players.size()-1).getName() + "\nUN: " + players.get(players.size()-1).getUserName();
     }
 
     public void quizInfo()
@@ -93,6 +115,11 @@ public class QuizServer extends UnicastRemoteObject implements QuizService, Play
         {
             ex.printStackTrace();
         }
+    }
+
+    public void fetchPlayer(Player aPlayer)
+    {
+        players.add(aPlayer);
     }
 
     public boolean fileExists()
